@@ -1,14 +1,22 @@
-# nmap-scanner
-Python script that scans the local network using nmap and exports results to .json file
-
-This Python script scans a network using the nmap library, retrieves IP addresses of network adapters, and sends the scan results to a URL. The script uses several libraries, including ifaddr, nmap, json, argparse, and requests.
-
-The script starts by importing the required libraries. The argparse library is used to specify the network interface. Then, it gets all adapters and their IP addresses using the ifaddr library. It prints the subnets for the specified interface.
-
-The script uses the nmap library to scan the network. The scan function is called with arguments to scan specific ports and protocols. The output is stored in a JSON format using the json library.
-
-After scanning the network, the script prints the scan results for each host, including the hostname, state, protocol, port, and banner information.
-
-The script sends the scan results to a URL using the requests library. It sends an HTTP post request with the scan results in JSON format.
-
-Finally, the script generates an output file in JSON format named "output.json" containing the scan results. It uses the json library to write the JSON data to the output file.
+<h1>Network Scanner README</h1>
+<p>This Python script is used for scanning a network and retrieving information about open ports and services running on devices within the network. The script uses the <code>ifaddr</code> module for fetching IP addresses of adapters, the <code>nmap</code> module for network exploration and management, and the <code>requests</code> module for sending HTTP requests.</p>
+<p>To use the script, simply specify the network interface with the <code>-i</code> flag when running the script. By default, the script will use the <code>eth0</code> interface. For example:</p>
+<pre><code>python3 network_scanner.py -i wlan0</code></pre>
+<p>The script will then retrieve the IP address of the specified interface, scan the network for open ports on devices within the network, and output the results to the console. The script will also send the scan results to a specified URL and generate an output file named <code>output.json</code> with the scan results.</p>
+<p>By default, the script scans for open ports on the following ports:</p>
+<ul>
+  <li>21 (FTP)</li>
+  <li>22 (SSH)</li>
+  <li>53 (DNS)</li>
+  <li>80 (HTTP)</li>
+  <li>88 (Kerberos)</li>
+  <li>139 (NetBIOS Session Service)</li>
+  <li>445 (Microsoft-DS)</li>
+  <li>8000 (HTTP alternate)</li>
+  <li>8081 (HTTP alternate)</li>
+</ul>
+<p>If you want to change the ports to scan for, you can modify the <code>arguments</code> parameter in the <code>nm.scan()</code> function call. For example:</p>
+<pre><code>scan = nm.scan(hosts=subnet, arguments='-sV -sS -sU -p 80,443 -script=banner', sudo=True)</code></pre>
+<p>Finally, the script sends the scan results to a specified URL using the <code>requests.post()</code> function. By default, the script sends the scan results to <code>http://127.0.0.1/example/fake_url.php</code>. You can modify the URL by changing the <code>url</code> parameter in the <code>requests.post()</code> function call. For example:</p>
+<pre><code>response = requests.post('http://example.com/upload_results', json=output)</code></pre>
+<p>If the script encounters an error while sending the scan results to the URL or generating the output file, it will output an error message to the console.</p>
